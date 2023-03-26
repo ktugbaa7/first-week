@@ -1,30 +1,18 @@
 import axios from "axios";
 
-const getUsers = (userId) => {
-    return new Promise(async (resolve, reject) => {
-        const { data } = await axios("https://jsonplaceholder.typicode.com/users/" + userId);
+async function getDataUserAndId(userId) {
+    const { data:user } = await axios("https://jsonplaceholder.typicode.com/users/" + userId);
+    const { data:post } = await axios("https://jsonplaceholder.typicode.com/posts?userId=" + userId);
 
-        resolve(data);
-
-    })
-}
-const getPosts = (userId) => {
-    return new Promise(async (resolve, reject) => {
-        const { data } = await axios("https://jsonplaceholder.typicode.com/posts?userId=" + userId);
-
-        resolve(data);
-
-    })
+    console.log(user);
+    console.log(post);
 }
 
-async function getData(userId) {
+ async function getData(userId) {
     try{
-        const users = await getUsers(userId);
-        const posts = await getPosts(userId);
-        
-        console.log(users);
-        console.log(posts); 
-        const userData = [users, posts]
+        const userAndPost = await getDataUserAndId(userId);
+
+        const userData = [userAndPost];
         return userData;
 
     }catch(e) {
